@@ -35,3 +35,4 @@
 /area/lista            ListaAreaR     GET
 /area/patch            AltAreaR       POST
 /area/editar          EditAreaR      POST
+/json/trocaCartaoPorNome/#Text        JsonTrocaCartaoPorNomeR      GET
