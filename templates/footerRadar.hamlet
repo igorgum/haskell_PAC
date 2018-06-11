@@ -1,0 +1,17 @@
+<footer class="page-footer-fixed light-blue darken-2">
+
+          <ul class="pagination" style="text-align: center;">
+              $if (ordemcampo <= 1)
+                  <li class="waves-effect"><a href=" @{RadarIndiceR (desemcapsula pegaareaMaxOrdem) automatico} "><i class="material-icons">chevron_left</i></a></li>
+
+              $else
+                  <li class="waves-effect"><a href=" @{RadarIndiceR (ordemcampo - 1) automatico} "><i class="material-icons">chevron_left</i></a></li>
+              <li class="waves-effect" style="font-size: 150%;">#{desemcapsula pegaareaNome}</li>
+              <li class="waves-effect"><a href=" @{RadarIndiceR (ordemcampo + 1) automatico} "><i class="material-icons">chevron_right</i></a></li>
+              <p>
+              <input type="checkbox" id="cbauto" class="filled-in" onchange="inicAuto2()"/>
+              <label for="cbauto">Automático
+
+          <div class="footer-copyright light-blue darken-3 white-text">
+            <div class="container">
+            © 2018 Haskell-chan
