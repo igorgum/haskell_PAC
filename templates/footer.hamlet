@@ -1,0 +1,16 @@
+
+<footer class="page-footer-fixed light-blue darken-2">
+          <div class="container ">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">PAC - Projeto de Automação de Controle</h5>
+                <p class="grey-text text-lighten-4">Projeto que integra arduinos com leitores RFID a um WebApp de gerência e controle de acesso. </p>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links dos desenvolvedores</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="http://github.com/igorgum">Git de Igor Duarte</a>
+                  <li><a class="grey-text text-lighten-3" href="http://github.com/BlueReptile">Git de Julio Cezar</a>
+
+          <div class="footer-copyright light-blue darken-3 white-text">
+            <div class="container">
+            © 2018 Haskell-chan
