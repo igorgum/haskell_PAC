@@ -150,3 +150,41 @@ postPessoaPerfilR pid = do
                 redirect LoginPageR
     runDB $ Database.Persist.Postgresql.delete pid
     redirect ListaPessoaR
+
+getListaPessoaR :: Handler Html
+getListaPessoaR = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    pessoas <- runDB $ selectList [] [Asc PessoaNome]
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Pessoa"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+                <main>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Pessoas
+                                <th>
+                        <tbody>
+                            $forall (Entity pid pessoa) <- pessoas
+                                <tr>
+                                 <li class="divider"></li>
+                                    <td>
+                                        <a href=@{PessoaPerfilR pid}>
+                                            #{pessoaNome pessoa}
+                                    <td>
+                                        <form action=@{PessoaPerfilR pid} method=post>
+                                            <input class="btn waves-effect waves-light" type="submit" value="Apagar">
+        |]
+        $(whamletFile "templates/footer.hamlet")
