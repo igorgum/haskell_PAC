@@ -154,3 +154,40 @@ getSalaPerfilR sid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+getListaSalaR :: Handler Html
+getListaSalaR = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    salas <- runDB $ selectList [] [Asc SalaNome]
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Sala"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+                <main>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Salas
+                                <th>
+                        <tbody>
+                            $forall (Entity sid sala) <- salas
+                                <tr>
+                                 <li class="divider"></li>
+                                    <td>
+                                        <a href=@{SalaPerfilR sid}>
+                                            #{salaNome sala}
+                                    <td>
+                                        <form action=@{SalaPerfilR sid} method=post>
+                                            <input class="btn waves-effect waves-light" type="submit" value="Apagar">
+        |]
+        $(whamletFile "templates/footer.hamlet")
