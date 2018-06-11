@@ -73,3 +73,30 @@ getPessoaR = do
                     <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+
+
+postPessoaR :: Handler Html
+postPessoaR = do
+        maybeId <- lookupSession "ID"
+        idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+        nome <- runInputPost $ ireq textField "pessoa_nome"
+        cpf <- runInputPost $ ireq textField "pessoa_cpf"
+        cartaoID <- runInputPost $ ireq textField "cartaoID"
+        pid <- runDB $ insert $ Pessoa nome cartaoID cpf
+        defaultLayout $ do
+                setTitle "ⓅⒶⒸ - Pessoa"
+                addStylesheet $ (StaticR css_materialize_css)
+                addScript $ (StaticR js_jquery_js)
+                addScript $ (StaticR js_materialize_js)
+                toWidget $(juliusFile "templates/admin.julius")
+                toWidget $(luciusFile "templates/admin.lucius")
+                $(whamletFile "templates/header.hamlet")
+                [whamlet|
+                 <main>
+                    Pessoa #{nome} inserida com sucesso!
+                |]
+                $(whamletFile "templates/footer.hamlet")
