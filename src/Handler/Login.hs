@@ -92,3 +92,8 @@ postAdminLoginR = do
                                    }
                                  |]
                                  $(whamletFile "templates/footer.hamlet")
+
+getAdminLogoutR :: Handler Html
+getAdminLogoutR = do
+             deleteSession "ID"
+             redirect HomeR

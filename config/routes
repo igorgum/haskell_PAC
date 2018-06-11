@@ -26,6 +26,8 @@
 
 /loginPage             LoginPageR     GET
 /login                 AdminLoginR    POST
+/logout                AdminLogoutR   GET
+
 /registro              RegistroR      GET
 
 /area                  AreaR          GET POST
