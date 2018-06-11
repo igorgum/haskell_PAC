@@ -154,6 +154,37 @@ getSalaPerfilR sid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+
+postAltSalaR :: Handler Html
+postAltSalaR = do
+   maybeId <- lookupSession "ID"
+   idText <- case maybeId of
+                (Just id) -> do
+                    return id
+                _ -> do
+                    redirect LoginPageR
+   nome <- runInputPost $ ireq textField "sala_nome"
+   arid <- runInputPost $ ireq intField "id"
+   area <- runInputPost $ ireq intField "areaDesignada"
+   sid <- runInputPost $ ireq hiddenField "sid"
+   --sala <- runDB $ selectList [SalaId ==. sid] []
+   runDB $ Database.Persist.Postgresql.update sid [SalaNome Database.Persist.Postgresql.=. nome]
+   runDB $ Database.Persist.Postgresql.update sid [SalaArid Database.Persist.Postgresql.=. toSqlKey arid]
+   runDB $ Database.Persist.Postgresql.update sid [SalaArea Database.Persist.Postgresql.=. toSqlKey area]
+   defaultLayout $ do
+           setTitle "ⓅⒶⒸ - Sala"
+           addStylesheet $ (StaticR css_materialize_css)
+           addScript $ (StaticR js_jquery_js)
+           addScript $ (StaticR js_materialize_js)
+           toWidget $(juliusFile "templates/admin.julius")
+           toWidget $(luciusFile "templates/admin.lucius")
+           $(whamletFile "templates/header.hamlet")
+           [whamlet|
+            <main>
+               Sala Atualizada com Sucesso
+           |]
+           $(whamletFile "templates/footer.hamlet")
+
 postSalaPerfilR :: SalaId -> Handler Html
 postSalaPerfilR sid = do
     maybeId <- lookupSession "ID"
