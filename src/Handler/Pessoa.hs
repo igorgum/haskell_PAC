@@ -100,3 +100,43 @@ postPessoaR = do
                     Pessoa #{nome} inserida com sucesso!
                 |]
                 $(whamletFile "templates/footer.hamlet")
+
+
+getPessoaPerfilR :: PessoaId -> Handler Html
+getPessoaPerfilR pid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    pessoa <- runDB $ get404 pid
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Pessoa"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+         <main>
+          <br>
+           <br>
+            <div class="row">
+              <div class="col s6 offset-s3 valign">
+               <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                 <span class="card-title">PESSOA</span>
+                 <br>
+                     <p> Nome da Pessoa : #{pessoaNome pessoa}
+                     <p> CPF da Pessoa : #{pessoaCpf pessoa}
+                     <p> Cartão da Pessoa : #{pessoaCartao pessoa}
+                <br>
+                <div class="card-action">
+                  <form action=@{EditPessoaR}  method=post>
+                   <input type="hidden" id="pid" name="pid" value=#{fromSqlKey pid}>
+                   <button class="btn waves-effect waves-light" type="submit" name="action">Editar
+                     <i class="material-icons right">send</i>
+        |]
+        $(whamletFile "templates/footer.hamlet")

@@ -19,6 +19,7 @@
 
 
 /pessoa                PessoaR        GET POST
+!/pessoa/#PessoaId     PessoaPerfilR  GET POST
 /registro              RegistroR      GET
 
 /area                  AreaR          GET POST
