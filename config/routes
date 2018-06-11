@@ -21,6 +21,7 @@
 /pessoa                PessoaR        GET POST
 !/pessoa/#PessoaId     PessoaPerfilR  GET POST
 /pessoa/lista          ListaPessoaR   GET
+/pessoa/patch          AltPessoaR     POST
 /registro              RegistroR      GET
 
 /area                  AreaR          GET POST

@@ -140,6 +140,33 @@ getPessoaPerfilR pid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+postAltPessoaR :: Handler Html
+postAltPessoaR = do
+   maybeId <- lookupSession "ID"
+   idText <- case maybeId of
+                (Just id) -> do
+                    return id
+                _ -> do
+                    redirect LoginPageR
+   cpf <- runInputPost $ ireq textField "pessoa_cpf"
+   cartaoID <- runInputPost $ ireq textField "cartaoID"
+   pid <- runInputPost $ ireq hiddenField "pid"
+   runDB $ Database.Persist.Postgresql.update pid [PessoaCpf Database.Persist.Postgresql.=. cpf]
+   runDB $ Database.Persist.Postgresql.update pid [PessoaCartao Database.Persist.Postgresql.=. cartaoID]
+   defaultLayout $ do
+           setTitle "ⓅⒶⒸ - Pessoa"
+           addStylesheet $ (StaticR css_materialize_css)
+           addScript $ (StaticR js_jquery_js)
+           addScript $ (StaticR js_materialize_js)
+           toWidget $(juliusFile "templates/admin.julius")
+           toWidget $(luciusFile "templates/admin.lucius")
+           $(whamletFile "templates/header.hamlet")
+           [whamlet|
+            <main>
+               Pessoa Atualizada com Sucesso
+           |]
+           $(whamletFile "templates/footer.hamlet")
+
 postPessoaPerfilR :: PessoaId -> Handler Html
 postPessoaPerfilR pid = do
     maybeId <- lookupSession "ID"
