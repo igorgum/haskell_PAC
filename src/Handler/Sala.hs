@@ -154,6 +154,17 @@ getSalaPerfilR sid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+postSalaPerfilR :: SalaId -> Handler Html
+postSalaPerfilR sid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    runDB $ Database.Persist.Postgresql.delete sid
+    redirect ListaSalaR
+
 getListaSalaR :: Handler Html
 getListaSalaR = do
     maybeId <- lookupSession "ID"
