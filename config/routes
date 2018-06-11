@@ -9,3 +9,4 @@
 !/admin/#AdminId        ADMPerfilR     GET POST
 /admin/lista            ListaAdminR    GET
 /admin/patch            AltAdminR      POST
+/admin/editar          EditAdminR     POST
