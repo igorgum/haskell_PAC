@@ -25,6 +25,7 @@
 /pessoa/editar         EditPessoaR    POST
 
 /loginPage             LoginPageR     GET
+/login                 AdminLoginR    POST
 /registro              RegistroR      GET
 
 /area                  AreaR          GET POST
