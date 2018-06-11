@@ -35,4 +35,8 @@
 /area/lista            ListaAreaR     GET
 /area/patch            AltAreaR       POST
 /area/editar          EditAreaR      POST
+
+/radar                 RadarR         GET
+!/radar/#Int/#Text RadarIndiceR GET
+
 /json/trocaCartaoPorNome/#Text        JsonTrocaCartaoPorNomeR      GET
