@@ -19,3 +19,4 @@
 /registro              RegistroR      GET
 
 /area                  AreaR          GET POST
+/area/lista            ListaAreaR     GET

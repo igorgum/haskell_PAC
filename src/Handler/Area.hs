@@ -82,3 +82,42 @@ postAreaR = do
                 |]
                 $(whamletFile "templates/footer.hamlet")
         _ -> redirect HomeR
+
+
+getListaAreaR :: Handler Html
+getListaAreaR = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    areas <- runDB $ selectList [] [Asc AreaOrdem]
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Area"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+                <main>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Areas
+                                <th>
+                        <tbody>
+                            $forall (Entity aid area) <- areas
+                                <tr>
+                                 <li class="divider"></li>
+                                    <td>
+                                        <a href=@{AreaPerfilR aid}>
+                                            #{areaNome area}
+                                    <td>
+                                        <form action=@{AreaPerfilR aid} method=post>
+                                            <input class="btn waves-effect waves-light" type="submit" value="Apagar">
+        |]
+        $(whamletFile "templates/footer.hamlet")
