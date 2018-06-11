@@ -121,3 +121,87 @@ getListaAreaR = do
                                             <input class="btn waves-effect waves-light" type="submit" value="Apagar">
         |]
         $(whamletFile "templates/footer.hamlet")
+
+
+getAreaPerfilR :: AreaId -> Handler Html
+getAreaPerfilR aid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    area <- runDB $ get404 aid
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Area"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+        <main>
+          <br>
+           <br>
+            <div class="row">
+              <div class="col s6 offset-s3 valign">
+               <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                 <span class="card-title">ADMIN</span>
+                 <br>
+                 <p> AREA #{areaNome area}
+                 <p> link do mapa: #{areaMapa area}
+                <br>
+                <div class="card-action">
+                  <form action=@{EditAreaR}  method=post>
+                   <input type="hidden" id="aid" name="aid" value=#{fromSqlKey aid}>
+                   <button class="btn waves-effect waves-light" type="submit" name="action">Editar
+                     <i class="material-icons right">send</i>
+        |]
+        $(whamletFile "templates/footer.hamlet")
+
+postEditAreaR :: Handler Html
+postEditAreaR = do
+     maybeId <- lookupSession "ID"
+     idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+     aid <- runInputPost $ ireq hiddenField "aid"
+     area <- runDB $ selectList [AdminId ==. aid] []
+     defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Area"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+         <main>
+          <br>
+           <br>
+            <div class="row">
+              <div class="col s6 offset-s3 valign">
+               <form action=@{AltAreaR}  method=post>
+                <div class="card blue-grey darken-1">
+                 <div class="card-content white-text">
+                  <span class="card-title">AREA</span>
+                  <br>
+                  <p> Editar Area
+                  <br>
+                  <div class="input-field">
+                   <input type="hidden" id="aid" name="aid" value=#{fromSqlKey aid}>
+                   <input id="link" name="link" type="text" class="validate">
+                   <label class="white-text" for="link">Link da Area</label>
+                  <div class="input-field">
+                   <input id="seq" name="seq" type="number" class="validate">
+                   <label class="white-text" for="link">Sequencia da Area</label>
+                 <br>
+                 <div class="card-action">
+                   <button class="btn waves-effect waves-light" type="submit" name="action">Editar
+                     <i class="material-icons right">send</i>
+        |]
+        $(whamletFile "templates/footer.hamlet")
