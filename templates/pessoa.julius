@@ -1,0 +1,123 @@
+
+  $('.dropdown-button').dropdown({
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      belowOrigin: true,
+
+    }
+  );
+
+$(".dropdown-content>li>a").css("color", 'black');
+$(".dropdown-content>li>span").css("color", 'light-blue darken-2');
+
+
+$(document).ready(function() {
+  $('select').material_select();
+});
+
+
+$(document).ready(function() {
+  $('input#input_text, textarea#textarea2').characterCounter();
+});
+
+$(document).ready(function() {
+   M.updateTextFields();
+ });
+
+function updateID(){
+  var e = document.getElementById("arduinoIp");
+  console.log(document.getElementById("arduinoIp"));
+  console.log(e);
+  console.log(e.options[e.selectedIndex].value);
+  document.getElementById("cartaoID").innerHTML = $.ajax({
+  url: "http://" + e.options[e.selectedIndex].value + "/card",
+  method: 'GET',
+  dataType: 'json',
+  success: function(data) {
+    console.log(data.card);
+    card = data.card;
+    console.log(card);
+    document.getElementById('cartaoID').value=data.card;
+    document.getElementById('cartaoID').value=card;
+  },
+  complete: function(data) {
+     console.log("complete")
+  },
+   error: function(data){
+   alert("error");
+  }
+ });
+}
+
+function TestaCPF(strCPF) {
+    var Soma;
+    var Resto;
+    Soma = 0;
+    if (strCPF == "00000000000") return false;
+
+    for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto == 10) || (Resto == 11))  Resto = 0;
+    if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+
+    Soma = 0;
+    for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto == 10) || (Resto == 11))  Resto = 0;
+    if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+    return true;
+}
+
+
+
+$("#pessoaForm").validate({
+        rules: {
+            pessoa_nome: {
+                required: true,
+                minlength: 5
+            },
+            pessoa_cpf: {
+                required: true,
+                depends: function(element) {
+                return TestaCPF(element);
+                }
+
+            },
+            arduinoIp: {
+		      		required: true,
+		      		minlength: 5
+		       	},
+        //For custom messages
+        messages: {
+            pessoa_nome:{
+                required: "Digite o Nome",
+                minlength: "Digite no Minimo 5 caracteres"
+            },
+            pessoa_cpf:{
+              required: "Digite o CPF"
+              },
+        },
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        }
+     }});
+
+
+     $('.button-collapse').sideNav({
+           menuWidth: 300, // Default is 300
+           edge: 'right', // Choose the horizontal origin
+           closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+           draggable: true, // Choose whether you can drag to open on touch screens,
+         }
+       );
+
+     $('.collapsible').collapsible();
