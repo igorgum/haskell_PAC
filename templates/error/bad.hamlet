@@ -1,0 +1,3 @@
+<main>
+  <h3> Metodo invalido, voce tentou usar POST em uma pagina GET ou GET em uma pagina POST.
+  <img src=@{StaticR thinking_gif} alt="Pensando" class="center" style="width:400px;height:400px;">
