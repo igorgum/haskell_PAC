@@ -1,0 +1,79 @@
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
+  <div .janela onmouseover=drag(this) onmouseout=desfoca(this)>
+      <center>
+        $forall (E.Value salaid, E.Value salaarea, E.Value salanome, E.Value salaposicx, E.Value salaposicy, E.Value arip) <- salaLista
+            <span .windowTitle> #{salanome}
+            <!-- id #{}#{} \/abaixo\/-->
+            <div ##{fromSqlKey $ salaid}#{salanome}>
+            <div .botaoeditar style="display:none;">
+                <a .btn-floating left >
+                    <i .material-icons>zoom_out
+                <a .btn-floating right>
+                    <i .material-icons>zoom_in
+            <!-- O motivo do Script ficar aqui é que o Julius aparentemente não itera listas, apenas o hamlet -->
+            <script>
+                (function atualiza#{salanome}(){
+                  console.log("oi,me chamo #{salanome}");
+                  console.log("@{HomeR}"+"json/trocaCartaoPorNome/");
+                  e = document.getElementById("#{fromSqlKey $ salaid}#{salanome}").innerHTML;
+                  console.log("oque tenho dentro ="+e);
+                  console.log("arip ="+ "#{arip}");
+                  e = $.ajax({
+                      url: "http://#{arip}/sala",
+                      method: 'GET',
+                      dataType: 'json',
+                      success: function(data) {
+                        var listaDeSalasJson = data.sala.split("&");
+                        for (i = 0; i < listaDeSalasJson.length; ++i) {
+                          var indexstring = listaDeSalasJson[i].toString();
+                          e = $.ajax({
+                              //aqui fica a parte engraçada <--------------------------------- (arrumar a rota tb)
+                              //url: "http://localhost:8080/json/trocaCartaoPorNome/"+indexstring,
+                              url: "@{HomeR}"+"json/trocaCartaoPorNome/"+indexstring,
+                              method: 'GET',
+                              dataType: 'json',
+                              success: function(data) {
+                                document.getElementById("#{fromSqlKey $ salaid}#{salanome}").innerHTML+=data.nomedocara;
+                                document.getElementById("#{fromSqlKey $ salaid}#{salanome}").innerHTML+="<br>";
+                                console.log("printei");
+                              },
+                              complete: function(data) { console.log("complete2"); },
+                              error: function(data){console.log("error2");}
+                          })
+                        };
+                      },
+                      complete: function(data) {
+                         console.log("complete1")
+                      },
+                       error: function(data){
+                       alert("error1");
+                      }
+                  });
+                })();
+
+
+
+
+
+
+
+  <!-- janela de debug -->
+  <div .janela onmouseover=drag(this) onmouseout=desfoca(this)>
+    <center>
+        <span .windowTitle> debugz
+            <div .debugclass> vazia
+            <div .botaoeditar style="display:none;">
+                <a .btn-floating left >
+                    <i .material-icons>zoom_out
+                <a .btn-floating right>
+                    <i .material-icons>zoom_in
+            <!-- O motivo do Script ficar aqui é que o Julius aparentemente não itera listas, apenas o hamlet -->
+            <script>
+                function atualizadebugz(){
+                  console.log("oi,me chamo debugz");
+                }
