@@ -15,3 +15,4 @@
 !/sala/#SalaId         SalaPerfilR    GET POST
 /sala/lista            ListaSalaR     GET
 /sala/patch            AltSalaR       POST
+/sala/editar          EditSalaR      POST
