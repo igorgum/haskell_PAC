@@ -17,3 +17,5 @@
 /sala/patch            AltSalaR       POST
 /sala/editar          EditSalaR      POST
 /registro              RegistroR      GET
+
+/area                  AreaR          GET POST
