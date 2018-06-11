@@ -4,6 +4,8 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
+
 /admin                  AdminR         GET POST
 !/admin/#AdminId        ADMPerfilR     GET POST
 /admin/lista            ListaAdminR    GET
+/admin/patch            AltAdminR      POST

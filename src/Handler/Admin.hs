@@ -123,6 +123,34 @@ getADMPerfilR aid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+postAltAdminR :: Handler Html
+postAltAdminR = do
+   maybeId <- lookupSession "ID"
+   idText <- case maybeId of
+                (Just id) -> do
+                    return id
+                _ -> do
+                    redirect LoginPageR
+   aid <- runInputPost $ ireq hiddenField "aid"
+   senha <- runInputPost $ ireq textField "senha"
+   admin <- runDB $ selectList [AdminId ==. aid] []
+   runDB $ update aid [AdminPass =. senha]
+   defaultLayout $ do
+           setTitle "ⓅⒶⒸ - Admin"
+           addStylesheet $ (StaticR css_materialize_css)
+           addScript $ (StaticR js_jquery_js)
+           addScript $ (StaticR js_materialize_js)
+           toWidget $(juliusFile "templates/admin.julius")
+           toWidget $(luciusFile "templates/admin.lucius")
+           $(whamletFile "templates/header.hamlet")
+           [whamlet|
+            <main>
+               Senha Atualizada com Sucesso
+           |]
+           $(whamletFile "templates/footer.hamlet")
+
+
+
 postADMPerfilR :: AdminId -> Handler Html
 postADMPerfilR aid = do
     maybeId <- lookupSession "ID"
