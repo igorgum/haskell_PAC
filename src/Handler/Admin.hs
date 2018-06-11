@@ -123,6 +123,17 @@ getADMPerfilR aid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+postADMPerfilR :: AdminId -> Handler Html
+postADMPerfilR aid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    runDB $ delete aid
+    redirect ListaAdminR
+
 getListaAdminR :: Handler Html
 getListaAdminR = do
     maybeId <- lookupSession "ID"
