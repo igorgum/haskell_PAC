@@ -1,0 +1,3 @@
+<main>
+  <h3> Permissão Negada, acho que vocẽ não é um admin.
+  <img src=@{StaticR thinking_gif} alt="Pensando" class="center" style="width:400px;height:400px;">
