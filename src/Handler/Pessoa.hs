@@ -140,3 +140,13 @@ getPessoaPerfilR pid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+postPessoaPerfilR :: PessoaId -> Handler Html
+postPessoaPerfilR pid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    runDB $ Database.Persist.Postgresql.delete pid
+    redirect ListaPessoaR
