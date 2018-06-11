@@ -205,3 +205,32 @@ postEditAreaR = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+
+
+postAltAreaR :: Handler Html
+postAltAreaR = do
+   maybeId <- lookupSession "ID"
+   idText <- case maybeId of
+                (Just id) -> do
+                    return id
+                _ -> do
+                    redirect LoginPageR
+   aid <- runInputPost $ ireq hiddenField "aid"
+   seq <- runInputPost $ ireq intField "seq"
+   link <- runInputPost $ ireq textField "link"
+   area <- runDB $ selectList [AreaId ==. aid] []
+   runDB $ update aid [AreaMapa =. link]
+   runDB $ update aid [AreaOrdem =. seq]
+   defaultLayout $ do
+           setTitle "ⓅⒶⒸ - Area"
+           addStylesheet $ (StaticR css_materialize_css)
+           addScript $ (StaticR js_jquery_js)
+           addScript $ (StaticR js_materialize_js)
+           toWidget $(juliusFile "templates/admin.julius")
+           toWidget $(luciusFile "templates/admin.lucius")
+           $(whamletFile "templates/header.hamlet")
+           [whamlet|
+            <main>
+               Area Atualizada com Sucesso
+           |]
+           $(whamletFile "templates/footer.hamlet")

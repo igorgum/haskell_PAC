@@ -21,3 +21,4 @@
 /area                  AreaR          GET POST
 !/area/#AreaId         AreaPerfilR    GET POST
 /area/lista            ListaAreaR     GET
+/area/patch            AltAreaR       POST
