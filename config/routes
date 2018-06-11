@@ -10,3 +10,5 @@
 /admin/lista            ListaAdminR    GET
 /admin/patch            AltAdminR      POST
 /admin/editar          EditAdminR     POST
+
+/sala                  SalaR          GET POST
