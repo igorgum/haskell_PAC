@@ -1,0 +1,67 @@
+function drag(e){
+    var listadejanelas = e.getElementsByClassName("botaoeditar");
+    listadejanelas[0].style.display = "block";
+    $( function() {$(".janela").draggable();});
+    e.style.backgroundColor= "rgba(255,255,255,25)";
+    e.style.border="4px solid #000";
+}
+
+function desfoca(e){
+    var listadejanelas = e.getElementsByClassName("botaoeditar");
+    listadejanelas[0].style.display = "none";
+    e.style.backgroundColor= "rgba(0,0,255,0)";
+    e.style.border="4px solid rgba(0,0,255,0)";
+}
+
+window.onload = function inicAuto(){
+    var x = #{rawJS automatico};
+    document.getElementById("cbauto").checked = x;
+    if (x == true){
+      vaiproprox();
+    } else {
+      setTimeout(function () {
+         window.location.href = " @{RadarIndiceR (ordemcampo) automatico}";
+      }, 8000);
+    }
+}
+
+function inicAuto2(){
+    if (document.getElementById("cbauto").checked == true){
+      window.location.href = " @{RadarIndiceR ordemcampo "true"}";
+    } else{
+      ficaaquimesmo();
+    }
+}
+
+function vaiproprox(){
+    setTimeout(function () {
+       window.location.href = " @{RadarIndiceR (ordemcampo + 1) "true"}";
+    }, 8000);
+}
+
+function ficaaquimesmo(){
+    window.location.href = " @{RadarIndiceR (ordemcampo) "false"}";
+}
+
+$('.button-collapse').sideNav({
+      menuWidth: 300, // Default is 300
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+      draggable: true, // Choose whether you can drag to open on touch screens,
+    }
+  );
+
+$('.collapsible').collapsible();
+
+  $('.dropdown-button').dropdown({
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      belowOrigin: true,
+
+    }
+  );
+
+  $(document).ready(function() {
+  $('select').material_select();
+});
