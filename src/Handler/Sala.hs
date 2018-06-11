@@ -101,3 +101,56 @@ postSalaR = do
                     Sala #{nome} inserida com sucesso!
                 |]
                 $(whamletFile "templates/footer.hamlet")
+
+
+getSalaPerfilR :: SalaId -> Handler Html
+getSalaPerfilR sid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+
+    salainfo <- runDB
+                $ E.select
+                $ E.from $ \(sala `E.InnerJoin` arduino `E.InnerJoin` area) -> do
+                    E.on $ sala ^.  SalaArea E.==. area ^. AreaId
+                    E.on $ sala ^. SalaArid E.==. arduino ^. ArduinoId
+                    return
+                        ( sala ^. SalaId
+                        , sala  ^. SalaNome
+                        , arduino ^. ArduinoName
+                        , area ^. AreaNome
+                        )
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Sala"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+         <main>
+          <br>
+           <br>
+            <div class="row">
+              <div class="col s6 offset-s3 valign">
+               <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                 <span class="card-title">SALA</span>
+                 <br>
+                 $forall (E.Value idsala, E.Value sala, E.Value arduino, E.Value area) <- salainfo
+                   $if idsala == sid
+                     <p> Nome da Sala : #{sala}
+                     <p> Area da Sala : #{area}
+                     <p> Arduino da Sala : #{arduino}
+                <br>
+                <div class="card-action">
+                  <form action=@{EditSalaR}  method=post>
+                   <input type="hidden" id="sid" name="sid" value=#{fromSqlKey sid}>
+                   <button class="btn waves-effect waves-light" type="submit" name="action">Editar
+                     <i class="material-icons right">send</i>
+        |]
+        $(whamletFile "templates/footer.hamlet")

@@ -12,3 +12,4 @@
 /admin/editar          EditAdminR     POST
 
 /sala                  SalaR          GET POST
+!/sala/#SalaId         SalaPerfilR    GET POST
