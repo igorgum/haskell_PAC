@@ -123,3 +123,43 @@ getADMPerfilR aid = do
                      <i class="material-icons right">send</i>
         |]
         $(whamletFile "templates/footer.hamlet")
+getListaAdminR :: Handler Html
+getListaAdminR = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    admins <- runDB $ selectList [] [Asc AdminLogin]
+    qtadmins <- runDB $ count ([] :: [Filter Admin])
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Admin"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+                <main>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Admins
+                                <th>
+                        <tbody>
+                            $forall (Entity aid admin) <- admins
+                                <tr>
+                                 <li class="divider"></li>
+                                    <td>
+                                        <a href=@{ADMPerfilR aid}>
+                                            #{adminLogin admin}
+                                    <td>
+                                      $if (qtadmins >= 2)
+                                        <form action=@{ADMPerfilR aid} method=post>
+                                            <input class="btn waves-effect waves-light" type="submit" value="Apagar">
+                                    <li class="divider"></li>
+        |]
+        $(whamletFile "templates/footer.hamlet")

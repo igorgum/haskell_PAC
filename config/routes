@@ -6,3 +6,4 @@
 / HomeR GET
 /admin                  AdminR         GET POST
 !/admin/#AdminId        ADMPerfilR     GET POST
+/admin/lista            ListaAdminR    GET
