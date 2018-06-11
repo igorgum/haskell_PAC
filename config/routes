@@ -16,3 +16,4 @@
 /sala/lista            ListaSalaR     GET
 /sala/patch            AltSalaR       POST
 /sala/editar          EditSalaR      POST
+/registro              RegistroR      GET
