@@ -23,6 +23,8 @@
 /pessoa/lista          ListaPessoaR   GET
 /pessoa/patch          AltPessoaR     POST
 /pessoa/editar         EditPessoaR    POST
+
+/loginPage             LoginPageR     GET
 /registro              RegistroR      GET
 
 /area                  AreaR          GET POST
