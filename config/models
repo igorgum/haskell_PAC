@@ -1,0 +1,40 @@
+Admin
+  login       Text
+  pass        Text
+  UniqueLogin login pass
+  deriving    Show
+
+Pessoa
+  nome        Text
+  cartao      Text
+  cpf         Text
+  UniqueCartao cartao
+  deriving    Show
+
+Sala json
+  nome        Text
+  arid        ArduinoId
+  area        AreaId
+  posx        Int Maybe
+  posy        Int Maybe
+  size        Double Maybe
+  deriving    Show
+
+Arduino
+  name        Text
+  ip          Text
+  deriving    Show
+
+Registro
+  sala        SalaId
+  pessoa      PessoaId
+  datahora    UTCTime
+  entrada     Bool
+  deriving    Show
+
+Area
+  nome        Text
+  mapa        Text
+  ordem       Int
+  UniqueOrdem ordem
+  deriving    Show
