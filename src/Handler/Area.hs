@@ -234,3 +234,15 @@ postAltAreaR = do
                Area Atualizada com Sucesso
            |]
            $(whamletFile "templates/footer.hamlet")
+
+
+postAreaPerfilR :: AreaId -> Handler Html
+postAreaPerfilR aid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    runDB $ delete aid
+    redirect ListaAreaR
