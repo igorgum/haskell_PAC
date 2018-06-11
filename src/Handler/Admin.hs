@@ -81,3 +81,45 @@ postAdminR = do
                 |]
                 $(whamletFile "templates/footer.hamlet")
         _ -> redirect HomeR
+
+
+getADMPerfilR :: AdminId -> Handler Html
+getADMPerfilR aid = do
+    maybeId <- lookupSession "ID"
+    idText <- case maybeId of
+            (Just id) -> do
+                return id
+            _ -> do
+                redirect LoginPageR
+    admin <- runDB $ get404 aid
+    defaultLayout $ do
+        setTitle "ⓅⒶⒸ - Admin"
+        addStylesheet $ (StaticR css_materialize_css)
+        addScript $ (StaticR js_jquery_js)
+        addScript $ (StaticR js_materialize_js)
+        toWidget $(juliusFile "templates/admin.julius")
+        toWidget $(luciusFile "templates/admin.lucius")
+        $(whamletFile "templates/header.hamlet")
+        [whamlet|
+         <main>
+          <br>
+           <br>
+            <div class="row">
+              <div class="col s6 offset-s3 valign">
+               <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                 <span class="card-title">ADMIN</span>
+                 <br>
+                 <p> Admin: #{adminLogin admin}
+                 <br>
+                 $if (idText == (adminLogin admin))
+                     <p>Senha: #{adminPass admin}
+                <br>
+                <div class="card-action">
+                 $if (idText == (adminLogin admin))
+                  <form action=@{EditAdminR}  method=post>
+                   <input type="hidden" id="aid" name="aid" value=#{fromSqlKey aid}>
+                   <button class="btn waves-effect waves-light" type="submit" name="action">Editar
+                     <i class="material-icons right">send</i>
+        |]
+        $(whamletFile "templates/footer.hamlet")
